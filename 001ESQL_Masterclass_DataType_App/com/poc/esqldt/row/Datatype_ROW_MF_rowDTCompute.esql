@@ -1,0 +1,28 @@
+BROKER SCHEMA com.poc.esqldt.row
+
+CREATE COMPUTE MODULE Datatype_ROW_MF_rowDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration and Initialization
+		-- Declare a ROW to hold temporary invoice data
+		DECLARE invoiceDetails ROW;
+		
+		-- Assigning nested values to the ROW (forming a hierarchy)
+		SET invoiceDetails.Customer.Name = 'Smith';
+		SET invoiceDetails.Customer.ID = 5001;
+		SET invoiceDetails.Summary.Total = 1500.75;
+		
+		-- 2. Using ROW for Complex Transformations
+		DECLARE productDetails ROW;
+		
+		-- Build a complex structure in memory (the buffer)
+		SET productDetails.Products.Product[1].Code = 'A101';
+		SET productDetails.Products.Product[2].Code = 'B202';
+		
+		-- Map the entire ROW structure to the Output message at once
+		SET OutputRoot.XMLNSC.Output.invoiceDetails = invoiceDetails;
+		SET OutputRoot.XMLNSC.Output.ProductDetails = productDetails;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

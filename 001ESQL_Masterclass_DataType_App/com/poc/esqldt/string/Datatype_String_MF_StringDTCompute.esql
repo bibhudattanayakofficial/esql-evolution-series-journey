@@ -1,0 +1,27 @@
+BROKER SCHEMA com.poc.esqldt.string
+
+CREATE COMPUTE MODULE Datatype_String_MF_StringDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE seriesMsg CHARACTER;
+		DECLARE product CHARACTER;
+		DECLARE fullSubTopic CHARACTER;
+		
+		-- 2. Assignments
+		SET seriesMsg = 'Welcome to ESQL Masterclass Series';
+		
+		-- 3. Concatenation using the || operator
+		SET fullSubTopic = 'String' || ' ' || 'Data Type';
+		
+		-- 4. Handling Single Quotes (Escape with another single quote)
+		SET product = 'IBM ''App Connect Enterprise'' Series';
+		
+		-- 5. Output Mapping
+		SET OutputRoot.XMLNSC.Output.Note = product;
+		SET OutputRoot.XMLNSC.Output.seriesMessage = seriesMsg;
+		SET OutputRoot.XMLNSC.Output.SubTopic = fullSubTopic;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

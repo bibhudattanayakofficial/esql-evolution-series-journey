@@ -1,0 +1,29 @@
+BROKER SCHEMA com.poc.esqldt.reference
+
+CREATE COMPUTE MODULE Datatype_REFERENCE_MF_referenceDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Creating a reference to a nested structure with declaration
+		DECLARE custInvcRef REFERENCE TO InputRoot.XMLNSC.Invoice.Customer.Details;
+		
+		-- Now, use the shortcut 'custInvcRef' instead of the full path
+		SET OutputRoot.XMLNSC.Output.Customer.Name = custInvcRef.Name;
+		SET OutputRoot.XMLNSC.Output.Customer.City = custInvcRef.Address.City;
+		
+		-- 2. Dynamic Navigation (MOVE)
+		-- Initialize the reference to the first item in an array
+		DECLARE prodRef REFERENCE TO InputRoot.XMLNSC.Invoice.Products.Product[1];
+		DECLARE I INTEGER 1;
+		WHILE LASTMOVE(prodRef) DO
+			-- Process current item logic
+			SET OutputRoot.XMLNSC.Output.Products.Product[I].Name = prodRef.Name;
+			SET OutputRoot.XMLNSC.Output.Products.Product[I].Price = prodRef.Price;
+			
+			SET I = I + 1;
+			-- Move the pointer to the next sibling in the XML tree
+			MOVE prodRef NEXTSIBLING;
+		END WHILE;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

@@ -1,0 +1,24 @@
+<Output>
+    <Customer>
+        <Name>Smith</Name>
+        <City>Sydney</City>
+    </Customer>
+    <Products>
+        <Product>
+            <Name>BAT</Name>
+            <Price>55000</Price>
+        </Product>
+        <Product>
+            <Name>Gloves</Name>
+            <Price>6600</Price>
+        </Product>
+        <Product>
+            <Name>Helmet</Name>
+            <Price>15000</Price>
+        </Product>
+        <Product>
+            <Name>Pads</Name>
+            <Price>13500</Price>
+        </Product>
+    </Products>
+</Output>
