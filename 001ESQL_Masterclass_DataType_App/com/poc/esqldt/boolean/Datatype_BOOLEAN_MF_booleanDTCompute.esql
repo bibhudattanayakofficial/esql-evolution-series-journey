@@ -1,0 +1,32 @@
+BROKER SCHEMA com.poc.esqldt.boolean
+
+CREATE COMPUTE MODULE Datatype_BOOLEAN_MF_booleanDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE isRecordValid        BOOLEAN;
+		DECLARE isProcessingComplete BOOLEAN;
+		DECLARE status               BOOLEAN;
+		
+		-- 2. Assignment
+		-- Assignments are case-insensitive (TRUE, true, True are all valid)
+		SET isRecordValid = TRUE;
+		SET isProcessingComplete = false;
+		
+		-- 3. UNKNOWN typically occurs when comparing a NULL value
+		SET status = UNKNOWN;
+		
+		-- 4. Using BOOLEAN in Logic
+		-- Checking conditions to determine the output status
+		IF isRecordValid THEN
+			SET OutputRoot.XMLNSC.Output.Status = 'SUCCESS';
+		ELSEIF NOT isRecordValid AND isProcessingComplete = TRUE THEN
+			SET OutputRoot.XMLNSC.Output.Status = 'FAILED';
+		ELSE
+			-- Handles the UNKNOWN state
+			SET OutputRoot.XMLNSC.Output.Status = 'PENDING_VERIFICATION';
+		END IF;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

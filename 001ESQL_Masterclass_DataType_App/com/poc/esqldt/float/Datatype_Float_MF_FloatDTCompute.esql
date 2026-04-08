@@ -1,0 +1,28 @@
+BROKER SCHEMA com.poc.esqldt.float
+
+CREATE COMPUTE MODULE Datatype_Float_MF_FloatDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE piValue FLOAT;
+		DECLARE largeNumber FLOAT;
+		DECLARE area FLOAT;
+		
+		-- 2. Assignment
+		SET piValue = 3.141592653589793;
+		
+		-- 3. Using Scientific Notation
+		SET largeNumber = 1.7E+308;
+		
+		-- 4. Calculating a large volume or scientific result
+		DECLARE radius FLOAT 5.5;
+		SET area = piValue * (radius * radius);
+		
+		-- 5. Output Mapping
+		SET OutputRoot.XMLNSC.Output.piValue = piValue;
+		SET OutputRoot.XMLNSC.Output.largeNumber = largeNumber;
+		SET OutputRoot.XMLNSC.Output.areaOfCircle = area;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

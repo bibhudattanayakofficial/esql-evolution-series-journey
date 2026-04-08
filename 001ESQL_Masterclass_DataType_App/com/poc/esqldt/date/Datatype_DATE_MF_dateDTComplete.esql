@@ -1,0 +1,23 @@
+BROKER SCHEMA com.poc.esqldt.date
+
+CREATE COMPUTE MODULE Datatype_TIME_MF_timeDTComplete
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE dummyDate, expiry DATE;
+		
+		-- 2. Assignment (Stores a calendar date (Year, Month, Day).)
+		SET dummyDate = DATE '2026-03-30'; -- Represents March 30, 2026
+		SET expiry = DATE '2026-03-20';
+		
+		-- 3. Output Mapping
+		SET OutputRoot.XMLNSC.Output.dummyDate = dummyDate;
+		
+		-- 4. Handling Date Logic (Used for checking deadlines and expiration.)
+		IF expiry < CURRENT_DATE THEN
+			SET OutputRoot.XMLNSC.Output.Status = 'Expired';
+		END IF;
+
+		RETURN TRUE;
+	END;
+END MODULE;

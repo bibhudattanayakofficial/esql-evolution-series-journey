@@ -1,0 +1,27 @@
+BROKER SCHEMA com.poc.esqldt.gmttime
+
+CREATE COMPUTE MODULE Datatype_GMTTIME_MF_gmtTimeDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE universalTime GMTTIME;
+		
+		-- 2. Assignment
+		-- Use the GMTTIME keyword followed by 'hh:mm:ss.ffffff'
+		SET universalTime = GMTTIME '10:05:30.450';
+		
+		-- 3. Assigning the current universal system time
+		DECLARE currentGMT GMTTIME CURRENT_GMTTIME;
+		
+		-- 4. Handling GMTTIME in Global Logs
+		-- Ensure hours, minutes, and seconds have two digits (e.g., 08, not 8)
+		IF universalTime < GMTTIME '12:00:00' THEN
+			SET OutputRoot.XMLNSC.Output.Period = 'Morning GMT';
+		END IF;
+
+		-- 5. Standardizing the output for a global API response
+		SET OutputRoot.XMLNSC.Output.SyncTime = CAST(currentGMT AS CHARACTER);
+		
+		RETURN TRUE;
+	END;
+END MODULE;
