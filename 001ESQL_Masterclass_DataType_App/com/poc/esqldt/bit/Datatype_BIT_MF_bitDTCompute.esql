@@ -1,0 +1,20 @@
+BROKER SCHEMA com.poc.esqldt.bit
+
+CREATE COMPUTE MODULE Datatype_BIT_MF_bitDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Declaration
+		DECLARE binaryFlag BIT;
+		
+		-- 2. Assignment (Use 'B' prefix)
+		SET binaryFlag = B'101101';
+		
+		-- 3. Appending Bits
+		SET binaryFlag = binaryFlag || B'00'; -- Result: B'10110100'
+		
+		-- 4. Output Mapping
+		SET OutputRoot.XMLNSC.Output.binaryMessage = binaryFlag;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

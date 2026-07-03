@@ -1,0 +1,28 @@
+BROKER SCHEMA com.poc.esqldt.timestamp
+
+CREATE COMPUTE MODULE Datatype_TIMESTAMP_MF_timestampDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE logEntry TIMESTAMP;
+		DECLARE currentLocalTS TIMESTAMP;
+		
+		-- 2. Assignment
+		-- Use the TIMESTAMP keyword followed by 'yyyy-MM-dd HH:mm:ss.SSSSSS'
+		SET logEntry = TIMESTAMP '2026-04-02 14:30:00.125';
+		
+		-- 3. Capturing the current local system date and time
+		SET currentLocalTS = CURRENT_TIMESTAMP;
+		
+		-- 4. Handling Timestamps in Audit Logs
+		-- Checking if a transaction is backdated
+		IF logEntry < CURRENT_TIMESTAMP - INTERVAL '1' DAY THEN
+			SET OutputRoot.XMLNSC.Output.Alert = 'Backdated Transaction detected';
+		END IF;
+		
+		-- 5. Output Mapping (Converting to CHARACTER for a human-readable XML response)
+		SET OutputRoot.XMLNSC.Output.ProcessedAt = CAST(currentLocalTS AS CHARACTER);
+
+		RETURN TRUE;
+	END;
+END MODULE;

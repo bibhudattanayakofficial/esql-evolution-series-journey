@@ -1,0 +1,29 @@
+BROKER SCHEMA com.poc.esqldt.gmttimestamp
+
+CREATE COMPUTE MODULE Datatype_GMTTIMESTAMP_MF_gmtTimestampDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE globalLog GMTTIMESTAMP;
+		DECLARE currentGlobalTS GMTTIMESTAMP;
+		
+		-- 2. Assignment
+		-- Use the GMTTIMESTAMP keyword followed by 'yyyy-MM-dd HH:mm:ss.SSSSSS'
+		SET globalLog = GMTTIMESTAMP '2026-04-02 10:05:15.123456';
+		
+		-- 3. Capturing the current universal system date and time
+		SET currentGlobalTS = CURRENT_GMTTIMESTAMP;
+		
+		-- 4. Handling GMTTIMESTAMP in Global APIs/Apps
+		-- Standardizing a transaction timestamp for a cross-border API/App
+		SET OutputRoot.XMLNSC.Output.TransactionID = 'TXN_995';
+		SET OutputRoot.XMLNSC.Output.UniversalTime = CAST(currentGlobalTS AS CHARACTER);
+		
+		-- 5. Comparing logs against a 24-hour global window
+		IF globalLog < CURRENT_GMTTIMESTAMP - INTERVAL '24' HOUR THEN
+			SET OutputRoot.XMLNSC.Output.Status = 'Archive Candidate';
+		END IF;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

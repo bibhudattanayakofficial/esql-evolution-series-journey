@@ -1,0 +1,28 @@
+BROKER SCHEMA com.poc.esqldt.decimal
+
+CREATE COMPUTE MODULE Datatype_Decimal_MF_DecimalDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE totalAmount, totalAmountCasted DECIMAL;
+		DECLARE discount DECIMAL;
+		
+		-- 2. Assignment
+		SET totalAmount = 9850.75;
+		
+		-- Using CAST for specific Precision (10) and Scale (2)
+		SET totalAmountCasted = CAST(9850.756 AS DECIMAL(10, 2)); -- Result: 9850.76 (Rounded to 2 decimal places)
+		
+		SET OutputRoot.XMLNSC.Output.totalAmount = totalAmount;
+		SET OutputRoot.XMLNSC.Output.totalAmountCasted = totalAmountCasted;
+		
+		-- Precise calculation for a 10% discount
+		SET discount = totalAmount * 0.10;
+		
+		IF totalAmount > 5000.00 THEN
+    		SET OutputRoot.XMLNSC.Output.FinalTotal = totalAmount - discount;
+		END IF;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

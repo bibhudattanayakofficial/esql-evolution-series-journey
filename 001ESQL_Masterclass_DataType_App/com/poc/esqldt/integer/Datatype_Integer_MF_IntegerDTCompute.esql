@@ -1,0 +1,33 @@
+BROKER SCHEMA com.poc.esqldt.integer
+
+CREATE COMPUTE MODULE Datatype_Integer_MF_IntegerDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE userCount,userCountArth INTEGER;
+		DECLARE errorCode INTEGER;
+		
+		-- 2. Assignment
+		SET userCount = 1500;
+		
+		-- 3. Negative Integer Example
+		SET errorCode = -500;
+		
+		-- 4. Simple Arithmetic operation (Incrementing)
+		SET userCountArth = userCount + 1;
+		
+		-- 5. Using an Integer as an array index
+		DECLARE i INTEGER 1;
+
+		-- Output Mapping
+		SET OutputRoot.XMLNSC.Output.Item[i].userCount = userCount;
+		SET OutputRoot.XMLNSC.Output.Item[i].errorCode = errorCode;
+		SET OutputRoot.XMLNSC.Output.Item[i].userCountAfterArthOpr = userCountArth;
+		
+		SET OutputRoot.XMLNSC.Output.Item[i+1].userCount = userCount+1;
+		SET OutputRoot.XMLNSC.Output.Item[i+1].errorCode = errorCode;
+		SET OutputRoot.XMLNSC.Output.Item[i+1].userCountAfterArthOpr = userCountArth+1;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

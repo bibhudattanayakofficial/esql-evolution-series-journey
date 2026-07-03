@@ -1,0 +1,28 @@
+<Invoice>
+	<Customer>
+		<Details>
+			<Name>Smith</Name>
+			<Address>
+				<City>Sydney</City>
+			</Address>
+		</Details>
+	</Customer>
+	<Products>
+		<Product>
+			<Name>BAT</Name>
+			<Price>55000</Price>
+		</Product>
+		<Product>
+			<Name>Gloves</Name>
+			<Price>6600</Price>
+		</Product>
+		<Product>
+			<Name>Helmet</Name>
+			<Price>15000</Price>
+		</Product>
+		<Product>
+			<Name>Pads</Name>
+			<Price>13500</Price>
+		</Product>
+	</Products>
+</Invoice>

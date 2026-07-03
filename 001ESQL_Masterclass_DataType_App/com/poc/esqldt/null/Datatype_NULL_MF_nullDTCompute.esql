@@ -1,0 +1,33 @@
+BROKER SCHEMA com.poc.esqldt.null
+
+CREATE COMPUTE MODULE Datatype_NULL_MF_nullDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE price INTEGER 100;
+		
+		-- 2. Initializing a variable as unprovided
+		DECLARE middleName CHARACTER NULL;
+		DECLARE tax INTEGER;
+		
+		-- 3. Assignment (The NULL data type represents a special state where a value is unknown, undefined, or missing.)
+		SET tax = NULL;
+		
+		-- 4. Explicitly removing a field or marking it as missing in the tree
+		SET OutputRoot.XMLNSC.Output.TemporaryData = NULL;
+		
+		-- 5. Assigning a NULL state directly to a field
+		SET OutputRoot.XMLNSC.Output.Status VALUE = NULL;
+		
+		-- 6. Handling NULL in Expressions 
+		-- Note: NULL is "infectious." If any part of a mathematical or string operation is NULL, the expression returns NULL.)
+		SET OutputRoot.XMLNSC.Output.Total = price + tax; -- Result: NULL
+		
+		-- Use IS NULL or IS NOT NULL for checks (NEVER use '= NULL')
+		IF middleName IS NULL THEN
+			SET OutputRoot.XMLNSC.Output.NameStatus = 'Incomplete Name';
+		END IF;
+				
+		RETURN TRUE;
+	END;
+END MODULE;

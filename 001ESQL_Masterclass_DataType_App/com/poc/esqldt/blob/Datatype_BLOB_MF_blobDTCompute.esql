@@ -1,0 +1,27 @@
+BROKER SCHEMA com.poc.esqldt.blob
+
+CREATE COMPUTE MODULE Datatype_BLOB_MF_blobDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Declaration
+		DECLARE rawPayload BLOB;
+		DECLARE payload BLOB;
+		DECLARE secureToken BLOB;
+		
+		-- 2. Assignment (Use 'X' prefix)
+		SET rawPayload = X'48656c6c6f'; -- Hex for "Hello"
+		
+		-- 3. Note: Digits must be in pairs (0-9, A-F)
+		SET secureToken = X'ABC123DEF456';
+		
+		-- 4. Converting CHARACTER to BLOB
+		SET payload = CAST('Message' AS BLOB CCSID 1208);
+		
+		-- 5. Output Mapping
+		SET OutputRoot.XMLNSC.Output.rawPayload = rawPayload;
+		SET OutputRoot.XMLNSC.Output.secureToken = secureToken;
+		SET OutputRoot.XMLNSC.Output.Payload = payload;
+		
+		RETURN TRUE;
+	END;
+END MODULE;

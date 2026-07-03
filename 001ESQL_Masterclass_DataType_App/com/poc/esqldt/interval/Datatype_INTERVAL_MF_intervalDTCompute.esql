@@ -1,0 +1,55 @@
+BROKER SCHEMA com.poc.esqldt.interval
+
+CREATE COMPUTE MODULE Datatype_INTERVAL_MF_intervalDTCompute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. Basic Declaration
+		DECLARE gracePeriod INTERVAL;
+		DECLARE duration INTERVAL;
+		DECLARE preciseDelay INTERVAL;
+		DECLARE expiryDate DATE;
+		DECLARE nextRun TIMESTAMP;
+		DECLARE daysSince DATE;
+		DECLARE ageInterval INTERVAL;
+		
+		-- 2. Assignment
+		-- 2.1. Single unit: A duration of 30 days
+		SET gracePeriod = INTERVAL '30' DAY;
+		
+		-- 2.2. Combined unit: A negative duration of 5 years and 6 months
+		SET duration = INTERVAL '-5-06' YEAR TO MONTH;
+		
+		-- 2.3. Precise duration: 1 day, 2 hours, 3 minutes, and 4 seconds
+		SET preciseDelay = INTERVAL '1 02:03:04' DAY TO SECOND;
+		
+		-- 3. Calculate an Expiry Date (Today + 1 Year)
+		SET OutputRoot.XMLNSC.Output.ExpiryDate = CURRENT_DATE + INTERVAL '1' YEAR;
+		
+		-- 4. Schedule a Retry (Now + 15 Minutes)
+		SET OutputRoot.XMLNSC.Output.RetryAt = CURRENT_TIMESTAMP + INTERVAL '15' MINUTE;
+		
+		-- 5. Calculating the difference between two timestamps results in an INTERVAL
+		SET OutputRoot.XMLNSC.Output.ProcessingTime = (CURRENT_TIMESTAMP - Environment.StartTime) SECOND;
+		
+		-- 6. Adding Durations
+		-- 6.1 Calculate an Expiry Date (1 Year from today)
+		SET expiryDate = CURRENT_DATE + INTERVAL '1' YEAR;
+		
+		-- Schedule the Next Run (12 Hours from now)
+		SET nextRun = CURRENT_TIMESTAMP + INTERVAL '12' HOUR;
+		
+		-- 7. Calculate how many days since a specific date
+		SET daysSince = DATE '2025-01-01';
+		SET ageInterval = (CURRENT_DATE - daysSince) DAY;
+		
+		SET OutputRoot.XMLNSC.Output.gracePeriod = gracePeriod;
+		SET OutputRoot.XMLNSC.Output.duration = duration;
+		SET OutputRoot.XMLNSC.Output.preciseDelay = preciseDelay;
+		SET OutputRoot.XMLNSC.Output.expireAt = expiryDate;
+		SET OutputRoot.XMLNSC.Output.nextRun = nextRun;
+		SET OutputRoot.XMLNSC.Output.daysSince = daysSince;
+		SET OutputRoot.XMLNSC.Output.ageInterval = 'Extract From '''||CAST(ageInterval AS CHARACTER)||''' to '||CAST(EXTRACT(DAY FROM ageInterval) AS CHARACTER);
+		
+		RETURN TRUE;
+	END;
+END MODULE;
