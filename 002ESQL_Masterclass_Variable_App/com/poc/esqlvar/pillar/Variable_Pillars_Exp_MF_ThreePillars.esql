@@ -1,0 +1,16 @@
+BROKER SCHEMA com.poc.esqlvar.pillar
+
+CREATE COMPUTE MODULE Variable_Pillars_Exp_MF_ThreePillars
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- 1. SCOPE: Only visible inside 'Transformation_Module'
+        -- 2. LIFETIME: Exists only for one single message thread
+        -- 3. SHARING: Private to each message processed through this function;
+        
+        DECLARE INTERNAL_KEY CHARACTER 'SECRET_99';
+        
+        SET OutputRoot.JSON.Data.Auth = INTERNAL_KEY;
+        
+		RETURN TRUE;
+	END;
+END MODULE;

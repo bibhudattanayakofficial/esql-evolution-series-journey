@@ -1,0 +1,22 @@
+BROKER SCHEMA com.poc.esqlvar.dec_int
+
+CREATE COMPUTE MODULE Variable_Declaration_Initialization_MF_Var_Declaration_Intitialization
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- Basic Declaration & Initialization
+		-- Syntax: DECLARE Name Type InitialValue;
+		DECLARE USER_AGE INTEGER 25;
+		DECLARE IS_ACTIVE BOOLEAN TRUE;
+		DECLARE STATUS_MSG CHARACTER 'Processing';
+		
+		-- Changing Values with SET
+		DECLARE DISCOUNT_RATE DECIMAL; -- Starts as NULL
+		SET DISCOUNT_RATE = 10.5; -- Now holds 10.5
+		
+		-- Updating a value based on another variable
+		DECLARE TOTAL_PRICE INTEGER 100;
+		SET TOTAL_PRICE = TOTAL_PRICE + 50; -- Now holds 150
+		
+		RETURN TRUE;
+	END;
+END MODULE;

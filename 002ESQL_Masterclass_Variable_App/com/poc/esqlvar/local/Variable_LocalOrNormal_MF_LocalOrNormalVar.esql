@@ -1,0 +1,18 @@
+BROKER SCHEMA com.poc.esqlvar.local
+
+CREATE COMPUTE MODULE Variable_LocalOrNormal_MF_LocalOrNormalVar
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- Scenario: Adding a prefix to an Order ID
+		DECLARE ORDER_ID CHARACTER;
+		DECLARE ORDER_PREFIX CHARACTER 'ORD_';
+		SET ORDER_ID = ORDER_PREFIX||InputRoot.XMLNSC.OrderInput.OrderID;
+
+		SET OutputRoot.XMLNSC.OrderOutput.OrderId = ORDER_ID;
+		-- Test Case:
+		-- If Input OrderID is '123', ORDER_ID becomes 'ORD_123'.
+		-- When next message arrives, the variable resets to null.
+		
+		RETURN TRUE;
+	END;
+END MODULE;

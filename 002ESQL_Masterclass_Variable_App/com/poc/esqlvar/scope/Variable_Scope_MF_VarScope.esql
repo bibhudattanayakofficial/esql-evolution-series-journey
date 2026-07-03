@@ -1,0 +1,21 @@
+BROKER SCHEMA com.poc.esqlvar.scope
+
+-- Declared at Schema Level (Visible to all nodes in this Schema file)
+DECLARE APP_VERSION CHARACTER 'v1.0';
+
+CREATE COMPUTE MODULE Variable_Scope_MF_VarScope
+	-- Declared at Module Level (Visible only inside Module for all Procedures and Functions)
+    DECLARE PROCESSED_AT TIMESTAMP CURRENT_TIMESTAMP;
+    
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- Visible only within this function(Main)
+        DECLARE LOCAL_COUNT INTEGER 1;
+        
+        SET OutputRoot.XMLNSC.OutputMessage.Version = APP_VERSION;
+        SET OutputRoot.XMLNSC.OutputMessage.Processed_At = PROCESSED_AT;
+        SET OutputRoot.XMLNSC.OutputMessage.Count = LOCAL_COUNT;
+        
+		RETURN TRUE;
+	END;
+END MODULE;

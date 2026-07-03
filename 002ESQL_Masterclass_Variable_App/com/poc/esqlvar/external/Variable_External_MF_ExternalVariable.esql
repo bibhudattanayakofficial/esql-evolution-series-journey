@@ -1,0 +1,18 @@
+BROKER SCHEMA com.poc.esqlvar.external
+-- Declared at the Module or Schema level
+DECLARE LOGGING_ENABLED EXTERNAL BOOLEAN FALSE;
+
+CREATE COMPUTE MODULE Variable_External_MF_ExternalVariable
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+
+		-- Logic to evaluate external variable
+		IF LOGGING_ENABLED THEN
+			SET OutputRoot.XMLNSC.OutputData.LogStatus.Status = 'Details successfully written to the log file.';
+		ELSE
+			SET OutputRoot.XMLNSC.OutputData.LogStatus.Status = 'Logging functionality is currently inactive.';
+		END IF;
+
+		RETURN TRUE;
+	END;
+END MODULE;
