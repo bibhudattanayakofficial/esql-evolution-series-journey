@@ -1,0 +1,51 @@
+-------------------------------------------------------------
+1. Sample request for Local or Normal Variable test cases
+URL: http://localhost:7800/esql-poc/var-local-normal
+---------------
+ - <OrderInput>
+   	<OrderID>1234567890</OrderID>
+   </OrderInput>
+   
+ - <OrderOutput>
+   	<OrderId>ORD_1234567890</OrderId>
+   </OrderOutput>
+-------------------------------------------------------------
+2. Sample response for External Variable test cases
+URL: http://localhost:7800/esql-poc/var-external
+---------------
+ - <OutputData>
+    <LogStatus>
+        <Status>Logging functionality is currently inactive.</Status>
+    </LogStatus>
+   </OutputData>
+   
+ - <OutputData>
+    <LogStatus>
+        <Status>Details successfully written to the log file.</Status>
+    </LogStatus>
+   </OutputData>
+-------------------------------------------------------------
+3. Sample request and response for Shared Variable test cases
+URL: http://localhost:7800/esql-poc/var-shared
+---------------
+ - Positive Test:
+   - <CustomerRequest>
+       <CUST_ID>105</CUST_ID>
+	 </CustomerRequest>
+   - <CustomerResponse>
+    	<Status>SUCCESS</Status>
+    	<CustomerDetails>
+        	<CUST_ID>105</CUST_ID>
+        	<CUST_NAME>Salt</CUST_NAME>
+        	<CUST_STATUS>Active</CUST_STATUS>
+    	</CustomerDetails>
+	 </CustomerResponse>
+ - Negative Test:
+   - <CustomerRequest>
+    	<CUST_ID>111</CUST_ID>
+	 </CustomerRequest>
+   - <CustomerResponse>
+    	<Status>ERROR</Status>
+    	<Message>Customer Record not found.</Message>
+	 </CustomerResponse>
+--------------------------------------------------------

@@ -1,0 +1,54 @@
+-- NOTE: This code serves as a functional reference for implementing and managing 
+-- an in-memory cache using ESQL SHARED variables. It is not optimized for production.
+BROKER SCHEMA com.poc.esqlvar.shared
+
+-- This is a global shared memory space. It stays active across multiple messages.
+DECLARE CUSTOMER_CACHE SHARED ROW;
+
+CREATE COMPUTE MODULE Variable_Shared_MF_SharedVariable
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- Get the requested Customer ID from the incoming XML message
+		DECLARE searchId CHAR InputRoot.XMLNSC.CustomerRequest.CUST_ID;
+				
+		-- STEP 1: CHECK THE CACHE FIRST (Memory Check)		
+		-- Point to the very first customer in our saved cache list
+		DECLARE cacheRef REFERENCE TO CUSTOMER_CACHE.Data.Customers;
+		
+		-- Loop through the cache list until we find the matching Customer ID
+		WHILE LASTMOVE(cacheRef) AND cacheRef.CUST_ID <> searchId DO
+			MOVE cacheRef NEXTSIBLING;
+		END WHILE;
+		
+		-- STEP 2: CACHE MISS? REFRESH EVERYTHING FROM DATABASE
+		-- If we looked through the whole cache and found nothing, go to the DB
+		IF LASTMOVE(cacheRef) IS FALSE THEN
+			-- Wipe the old cache clean so we don't hold any old, stale data
+			SET CUSTOMER_CACHE.Data = NULL;
+			
+			-- Pull the entire active table from the database into our shared cache
+			SET CUSTOMER_CACHE.Data.Customers[] = SELECT * FROM Database.SYSDSN.SYSTEM.ACE_CUST_TAB;
+			
+			-- Reset our pointer back to the start of the brand new cache list
+			MOVE cacheRef TO CUSTOMER_CACHE.Data.Customers;
+			
+			-- Look one more time in this updated list for our target customer
+			WHILE LASTMOVE(cacheRef) AND cacheRef.CUST_ID <> searchId DO
+				MOVE cacheRef NEXTSIBLING;
+			END WHILE;
+		END IF;
+		
+		-- STEP 3: CREATE THE FINAL OUTGOING RESPONSE
+		-- If our pointer is standing on a matching customer, it's a success!
+		IF LASTMOVE(cacheRef) THEN
+			-- Success: Send back the customer data directly from our cache
+			SET OutputRoot.XMLNSC.CustomerResponse.Status = 'SUCCESS';
+			SET OutputRoot.XMLNSC.CustomerResponse.CustomerDetails = cacheRef;
+		ELSE
+			-- Failure: The customer does not exist in the cache or the database
+			SET OutputRoot.XMLNSC.CustomerResponse.Status = 'ERROR';
+			SET OutputRoot.XMLNSC.CustomerResponse.Message = 'Customer Record not found.';
+		END IF;
+		RETURN TRUE;
+	END;
+END MODULE;
