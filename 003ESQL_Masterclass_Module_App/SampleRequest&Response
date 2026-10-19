@@ -1,0 +1,16 @@
+Test URL: http://localhost:7800/esql-poc/modules
+
+Request: 
+<Payment>
+    <TxnId>1234556</TxnId>
+</Payment>
+
+Response:
+<Payment>
+    <Header>
+        <SystemSource>ACE_CORE_BANKING</SystemSource>
+        <Timestamp>2026-10-19T11:36:00.320506+05:30</Timestamp>
+        <Status>SUCCESS</Status>
+        <TrackingId>1234556</TrackingId>
+    </Header>
+</Payment>

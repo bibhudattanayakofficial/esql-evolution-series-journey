@@ -1,0 +1,28 @@
+BROKER SCHEMA com.poc.esqlmodule
+-- This is your specific node module
+CREATE COMPUTE MODULE ProcessPayment_Compute
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		-- Get the tracking ID from the incoming XML message
+		DECLARE TXN_ID CHARACTER InputRoot.XMLNSC.Payment.TxnId;
+		-- Create the target folder in the Output tree
+		CREATE FIELD OutputRoot.XMLNSC.Payment.Header;
+		DECLARE outHeaderRef REFERENCE TO OutputRoot.XMLNSC.Payment.Header;
+		-- Call the reusable schema procedure directly!
+		CALL CreateStandardHeader('SUCCESS', TXN_ID, outHeaderRef);
+		-- Map the actual payload
+		SET OutputRoot.XMLNSC.Payment.Amount = InputRoot.XMLNSC.Payment.Amount;
+
+		RETURN TRUE;
+	END;
+END MODULE;
+
+-- This function is outside the module.
+-- It is visible to EVERY node in this schema.
+CREATE PROCEDURE CreateStandardHeader(IN status CHARACTER,IN trackingId CHARACTER, INOUT outRef REFERENCE)
+BEGIN
+	SET outRef.SystemSource = 'ACE_CORE_BANKING';
+	SET outRef.Timestamp = CURRENT_TIMESTAMP;
+	SET outRef.Status = status;
+	SET outRef.TrackingId = trackingId;
+END;
