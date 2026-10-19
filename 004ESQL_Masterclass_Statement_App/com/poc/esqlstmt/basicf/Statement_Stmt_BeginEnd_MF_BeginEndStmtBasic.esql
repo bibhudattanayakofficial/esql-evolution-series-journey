@@ -1,0 +1,9 @@
+BROKER SCHEMA com.poc.esqlstmt.basicf
+
+CREATE COMPUTE MODULE Statement_Stmt_BeginEnd_MF_BeginEndStmtBasic
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.JSON.Data.Transaction.Status = 'PROCESSING';
+		RETURN TRUE;
+	END;
+END MODULE;

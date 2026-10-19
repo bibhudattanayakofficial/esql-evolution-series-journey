@@ -1,0 +1,22 @@
+BROKER SCHEMA com.poc.esqlstmt.basicf
+
+CREATE COMPUTE MODULE Statement_Stmt_Declare_MF_DeclareStmtBasic
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE GST_RATE CONSTANT DECIMAL 0.18;
+		DECLARE custRef REFERENCE TO InputRoot.JSON.Data.Orders;
+		DECLARE billAmount, taxAmount, totalBillAmount DECIMAL;
+		
+		SET OutputRoot.XMLNSC.Orders.Invoice.OrderID = custRef.OrderID;
+		SET OutputRoot.XMLNSC.Orders.Invoice.Price = CAST(custRef.Price AS DECIMAL);
+		
+		SET billAmount = custRef.Quantity * custRef.Price;
+		SET taxAmount = CAST(billAmount * GST_RATE AS DECIMAL(10, 2));
+		SET totalBillAmount = billAmount + taxAmount;
+		
+		SET OutputRoot.XMLNSC.Orders.Invoice.BillAmount = billAmount;
+		SET OutputRoot.XMLNSC.Orders.Invoice.TaxAmount = taxAmount;
+		SET OutputRoot.XMLNSC.Orders.Invoice.TotalBillAmount = totalBillAmount;
+		RETURN TRUE;
+	END;
+END MODULE;

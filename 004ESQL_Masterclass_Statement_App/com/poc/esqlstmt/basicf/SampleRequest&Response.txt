@@ -1,0 +1,33 @@
+#Statement_Basic_CF_Stmt_MF.msgflow
+http://localhost:7800/esql-poc/statement/begin-end
+
+{
+    "Transaction": {
+        "Status": "PROCESSING"
+    }
+}
+
+--------------------------------------------------------
+#Statement_Stmt_Declare_MF.msgflow
+http://localhost:7800/esql-poc/statement/declare
+
+Request:
+{
+    "Orders":{
+        "OrderID":"OR-123456",
+        "Price": 1560.5,
+        "Quantity": 5
+    }
+}
+
+Response:
+<Orders>
+    <Invoice>
+        <OrderID>OR-123456</OrderID>
+        <Price>1560.5</Price>
+        <BillAmount>7802.5</BillAmount>
+        <TaxAmount>1404.45</TaxAmount>
+        <TotalBillAmount>9206.95</TotalBillAmount>
+    </Invoice>
+</Orders>
+--------------------------------------------------------
