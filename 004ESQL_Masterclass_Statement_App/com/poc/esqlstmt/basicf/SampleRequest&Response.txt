@@ -25,9 +25,26 @@ Response:
     <Invoice>
         <OrderID>OR-123456</OrderID>
         <Price>1560.5</Price>
+        <Quantity>5</Quantity>
         <BillAmount>7802.5</BillAmount>
         <TaxAmount>1404.45</TaxAmount>
         <TotalBillAmount>9206.95</TotalBillAmount>
     </Invoice>
 </Orders>
 --------------------------------------------------------
+#Statement_Stmt_if_Condition_MF.msgflow
+http://localhost:7800/esql-poc/statement/if-else
+
+Request:
+{
+    "CibilReq":{
+        "CreditScore": 650
+    }
+}
+
+Response:
+<CibilResp>
+    <RiskStatus>LOW</RiskStatus>
+</CibilResp>
+--------------------------------------------------------
+

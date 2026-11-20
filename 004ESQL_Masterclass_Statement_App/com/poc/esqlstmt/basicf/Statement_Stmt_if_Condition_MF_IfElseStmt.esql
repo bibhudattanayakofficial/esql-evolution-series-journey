@@ -1,0 +1,14 @@
+BROKER SCHEMA com.poc.esqlstmt.basicf
+
+CREATE COMPUTE MODULE Statement_Stmt_if_Condition_MF_IfElseStmt
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE inputRef REFERENCE TO InputRoot.JSON.Data.CibilReq;
+		IF inputRef.CreditScore >= 750 THEN
+			SET OutputRoot.XMLNSC.CibilResp.RiskStatus = 'HIGH';
+		ELSE
+			SET OutputRoot.XMLNSC.CibilResp.RiskStatus = 'LOW';
+		END IF;
+		RETURN TRUE;
+	END;
+END MODULE;
