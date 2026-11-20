@@ -1,11 +1,10 @@
 #Statement_Basic_CF_Stmt_MF.msgflow
 http://localhost:7800/esql-poc/statement/begin-end
 
-{
-    "Transaction": {
-        "Status": "PROCESSING"
-    }
-}
+Response:
+<Transaction>
+    <Status>PROCESSING</Status>
+</Transaction>
 
 --------------------------------------------------------
 #Statement_Stmt_Declare_MF.msgflow
@@ -46,5 +45,20 @@ Response:
 <CibilResp>
     <RiskStatus>LOW</RiskStatus>
 </CibilResp>
+--------------------------------------------------------
+#Statement_Stmt_CASE_MF.msgflow
+http://localhost:7800/esql-poc/statement/case
+
+Request: 
+{
+    "ShippingRequest":{
+        "Mode": "EXPRESS"
+    }
+}
+
+Response:
+<ShippingResponse>
+    <Partner>BLUE_DART_AIR</Partner>
+</ShippingResponse>
 --------------------------------------------------------
 

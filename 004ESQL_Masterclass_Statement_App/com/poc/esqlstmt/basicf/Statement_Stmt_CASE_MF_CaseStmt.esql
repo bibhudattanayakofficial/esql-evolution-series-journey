@@ -1,0 +1,15 @@
+BROKER SCHEMA com.poc.esqlstmt.basicf
+
+CREATE COMPUTE MODULE Statement_Stmt_CASE_MF_CaseStmt
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		CASE InputRoot.JSON.Data.ShippingRequest.Mode
+			WHEN 'EXPRESS' THEN
+				SET OutputRoot.XMLNSC.ShippingResponse.Partner = 'BLUE_DART_AIR';
+			ELSE
+				SET OutputRoot.XMLNSC.ShippingResponse.Partner = 'POSTAL_SERVICE';
+			END CASE;
+		
+		RETURN TRUE;
+	END;
+END MODULE;
