@@ -1,0 +1,19 @@
+BROKER SCHEMA com.poc.esqlstmt.basicf
+
+CREATE COMPUTE MODULE Statement_Stmt_Call_MF_CallStatement
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		DECLARE prefix CHARACTER 'Ref_';
+		DECLARE trnxID CHARACTER '';
+		CALL getUniqueID(prefix, trnxID);
+		SET OutputRoot.XMLNSC.transactionResponse.trnxID = trnxID;
+		RETURN TRUE;
+	END;
+	
+	CREATE PROCEDURE getUniqueID(IN prefix CHARACTER, OUT trnxID CHARACTER)
+	BEGIN
+		DECLARE c_timeStamp CHARACTER;
+		SET c_timeStamp = CAST(CURRENT_TIMESTAMP AS CHARACTER FORMAT 'yyyyMMddHHmmssSSSSS');
+		SET trnxID = prefix || c_timeStamp;
+	END;
+END MODULE;

@@ -61,4 +61,10 @@ Response:
     <Partner>BLUE_DART_AIR</Partner>
 </ShippingResponse>
 --------------------------------------------------------
+#Statement_Stmt_Call_MF.msgflow
+http://localhost:7800/esql-poc/statement/call
 
+Response:
+<transactionResponse>
+    <trnxID>Ref_2026112116173211708</trnxID>
+</transactionResponse>
