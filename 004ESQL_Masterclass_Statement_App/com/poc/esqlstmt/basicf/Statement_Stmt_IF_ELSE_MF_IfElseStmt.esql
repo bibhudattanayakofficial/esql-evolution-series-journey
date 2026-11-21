@@ -1,6 +1,6 @@
 BROKER SCHEMA com.poc.esqlstmt.basicf
 
-CREATE COMPUTE MODULE Statement_Stmt_if_Condition_MF_IfElseStmt
+CREATE COMPUTE MODULE Statement_Stmt_IF_ELSE_MF_IfElseStmt
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		DECLARE inputRef REFERENCE TO InputRoot.JSON.Data.CibilReq;

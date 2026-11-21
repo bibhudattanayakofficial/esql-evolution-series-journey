@@ -1,6 +1,6 @@
 BROKER SCHEMA com.poc.esqlstmt.basicf
 
-CREATE COMPUTE MODULE Statement_Stmt_Call_MF_CallStatement
+CREATE COMPUTE MODULE Statement_Stmt_CALL_MF_CallStatement
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		DECLARE prefix CHARACTER 'Ref_';

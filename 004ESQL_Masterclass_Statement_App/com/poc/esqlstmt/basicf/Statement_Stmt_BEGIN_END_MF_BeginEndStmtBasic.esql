@@ -1,6 +1,6 @@
 BROKER SCHEMA com.poc.esqlstmt.basicf
 
-CREATE COMPUTE MODULE Statement_Stmt_BeginEnd_MF_BeginEndStmtBasic
+CREATE COMPUTE MODULE Statement_Stmt_BEGIN_END_MF_BeginEndStmtBasic
 	CREATE FUNCTION Main() RETURNS BOOLEAN
 	BEGIN
 		SET OutputRoot.XMLNSC.Transaction.Status = 'PROCESSING';
