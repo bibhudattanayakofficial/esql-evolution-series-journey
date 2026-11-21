@@ -1,0 +1,9 @@
+BROKER SCHEMA com.poc.esqlstmt.basicf
+
+CREATE COMPUTE MODULE Statement_Stmt_Return_MF_Unknown
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.XMLNSC.ReturnStmtResponse.FlagPath = 'Unknown';
+		RETURN TRUE;
+	END;
+END MODULE;

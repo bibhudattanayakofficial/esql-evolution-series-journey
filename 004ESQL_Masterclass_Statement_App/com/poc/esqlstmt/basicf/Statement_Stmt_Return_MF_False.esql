@@ -1,0 +1,10 @@
+BROKER SCHEMA com.poc.esqlstmt.basicf
+
+CREATE COMPUTE MODULE Statement_Stmt_Return_MF_False
+	CREATE FUNCTION Main() RETURNS BOOLEAN
+	BEGIN
+		SET OutputRoot.XMLNSC.ReturnStmtResponse.FlagPath = 'False';
+		RETURN TRUE;
+		RETURN TRUE;
+	END;
+END MODULE;
